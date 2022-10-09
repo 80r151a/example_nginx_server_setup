@@ -1,5 +1,7 @@
 #!/bin/bash
 
+
+### The server uses Debian 11
 ## Before executing the script, make sure
 # Requires to be sshpass and ssh-copy-id installed
 # Before executing the script, you need to log in to the server at least once.
@@ -68,7 +70,7 @@ ssh $remote_exection touch /etc/nginx/sites-available/bashgrandma.conf
 ssh $remote_exection ln -s /etc/nginx/sites-available/bashgrandma.conf /etc/nginx/sites-enabled/
 #
 # Setting up a virtual host (sending parameters to a configuration file)
-ssh $remote_exection "echo -e 'server {\n    listen 81.163.31.36:80;\n    location / {\n        root /data/www/;\n        }\n}' >> /etc/nginx/sites-available/bashgrandma.conf"
+ssh $remote_exection "echo -e 'server {\n    listen [::]:80;\n    listen 80;\n    access_log  /var/log/nginx/bashgrandma/access.log;\n    error_log   /var/log/nginx/bashgrandma/error.log;\n\n    server_name 81.163.31.36;\n\n    root /data/www;\n    index index.html;\n}' >> /etc/nginx/sites-available/bashgrandma.conf"
 #
 # Reloading the nginx config file
 ssh $remote_exection nginx -s reload
